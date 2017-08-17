@@ -38,6 +38,27 @@ router.route('/users/check/:username')
         });
     });
 
+router.route('/login')
+    .get((req, res) => {
+        User.findOne({email: req.query.email}, (err, user) => {
+            if (err) {
+                res.send(err);
+            }
+            if (!user) {
+                return res.send({message: 'There is no user in the system with that email address'});
+            }
+            user.comparePassword(req.query.password, function(err, isMatch) {
+                if (err) {
+                    throw(err);
+                }
+                if (isMatch) {
+                    return res.json(user);
+                }
+                res.send({message: 'The password provided does not match our records'});
+            });
+        });
+    });
+
 router.route('/users')
     .get((req, res) => {
         User.find((err, users) => {
@@ -50,8 +71,6 @@ router.route('/users')
     .post((req, res) => {
         let user = new User();
 
-        // add validation here
-
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
         user.email = req.body.email;
@@ -61,7 +80,6 @@ router.route('/users')
             if (err) {
                 res.send(err);
             }
-
             res.json({message: 'User successfully added!'});
         });
     });
@@ -98,12 +116,10 @@ router.route('/users/:username')
             if (err) {
                 res.send(err);
             }
-            res.json({message: `${user.firstName} ${user.lastName} deleted`});
+            res.json({message: `${req.params.username} deleted`});
         });
         
     });
-
-
 
 
 app.use('/api', router);

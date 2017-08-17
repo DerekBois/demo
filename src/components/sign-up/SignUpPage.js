@@ -43,12 +43,12 @@ class SignUpPage extends React.Component {
         }
         this.setState({errors: {}, saving: true});
         this.props.actions.createUser(this.state.user)
-            .then((err) => {
-                if (err) {
-                    return this.setState({errors: {form: err}, saving: false});
+            .then((error) => {
+                if (error) {
+                    return this.setState({errors: {form: error}, saving: false});
                 }
                 this.setState({saving: false});
-                browserHistory.push('/sign-in');
+                browserHistory.push('/');
             });
     }
     render() {

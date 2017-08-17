@@ -10,6 +10,9 @@ export function updateUserSuccess(user) {
 export function loadUserSuccess(users) {
     return {type: types.LOAD_USER_SUCCESS, users};
 }
+export function loginUserSuccess(user) {
+    return {type: types.LOGIN_USER_SUCCESS, user};
+}
 
 export function createUser(user) {
     return (dispatch, getState) => {
@@ -38,6 +41,16 @@ export function loadUser() {
             dispatch(loadUserSuccess(users));
         }).catch(error => {
             throw(error);
+        })
+    }
+}
+export function loginUser(user) {
+    return (dispatch, getState) => {
+        return userApi.loginUser(user).then(user => {
+            dispatch(loginUserSuccess(user));
+        }).catch(error => {
+            console.log(error);
+            return error;
         })
     }
 }
