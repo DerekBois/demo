@@ -6,8 +6,8 @@ import SignInPage from './components/sign-in/SignInPage';
 
 export default (
     <Route path="/">
-        <IndexRoute component={Home} />
-        <Route path="/sign-in" component={SignInPage} />
+        <IndexRoute component={SignInPage} />
+        <Route path="/home" component={Home} />
         <Route path="/sign-up" component={SignUpPage} />
     </Route>
 );

@@ -49,7 +49,7 @@ class SignInPage extends React.Component {
                     return this.setState({errors: {form: error}, saving: false});
                 }
                 this.setState({saving: false});
-                browserHistory.push('/');
+                browserHistory.push('/home');
             });
     }
     render() {

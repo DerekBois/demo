@@ -5,7 +5,6 @@ class UserApi {
         return new Promise((resolve, reject) => {
             axios.get('http://localhost:3001/api/users/')
                 .then(res => {
-                    console.log(res);
                     resolve(res.data);
                 }).catch(err => reject(err));
         });
@@ -17,7 +16,8 @@ class UserApi {
                     if (res.data.message) {
                         return reject(res.data.message);
                     }
-                    resolve(res.data);
+                    let {password, ...logged} = Object.assign({}, res.data)
+                    resolve(logged);
                 }).catch(err => reject(err));
         });
     }
