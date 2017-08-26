@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SignInForm from './SignInForm';
-import {browserHistory} from 'react-router';
+import SidebarMenu from '../common/SidebarMenu';
+import ProfileForm from './ProfileForm';
+// import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as userActions from '../../actions/userActions';
 
-class SignInPage extends React.Component {
+class ProfilePage extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            user: Object.assign({}, props.currentUser),
+            user: Object.assign({}, this.props.currentUser),
             saving: false,
             errors: {}
         };
@@ -18,14 +19,19 @@ class SignInPage extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.user !== nextProps.user) {
+            this.setState({user: Object.assign({}, nextProps.user)});
+        }
+    }
     formIsValidated() {
         let errors = {},
             valid = true;
 
-        // if (this.state.user.password !== this.state.user.confirm) {
-        //     errors.confirm = 'Your password and confirm do not match';
-        //     valid = false;
-        // }
+        if (this.state.user.password !== this.state.user.confirm) {
+            errors.confirm = 'Your password and confirm do not match';
+            valid = false;
+        }
         this.setState({errors: errors});
         return valid;
     }
@@ -42,40 +48,43 @@ class SignInPage extends React.Component {
             return;
         }
         this.setState({errors: {}, saving: true});
-        
-        this.props.actions.loginUser(this.state.user)
+        this.props.actions.updateUser(this.state.user)
             .then((error) => {
                 if (error) {
                     return this.setState({errors: {form: error}, saving: false});
                 }
                 this.setState({saving: false});
-                browserHistory.push('/profile');
             });
     }
     render() {
         return (
-            <SignInForm 
-                user={this.state.user}
-                onChange={this.onChange}
-                onSubmit={this.onSubmit}
-                saving={this.state.saving}
-                errors={this.state.errors}
-            />
+            <div className="site-wrapper">
+
+                <div className="content">
+                    <SidebarMenu />
+                    <div className="main">
+                        <ProfileForm 
+                            user={this.state.user}
+                            onChange={this.onChange}
+                            onSubmit={this.onSubmit}
+                            saving={this.state.saving}
+                            errors={this.state.errors}
+                        />
+                    </div>
+                </div>
+            </div>
         );
     }
 }
-SignInPage.propTypes = {
+ProfilePage.propTypes = {
     currentUser: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
-    let currentUser = {email: 'derekabois@gmail.com', password: 'a123'};
-
     console.log(state);
-
     return {
-        currentUser: currentUser
+        currentUser: state.currentUser
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -84,5 +93,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

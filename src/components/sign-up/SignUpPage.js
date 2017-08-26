@@ -10,7 +10,7 @@ class SignUpPage extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            user: Object.assign({}, props.user),
+            user: Object.assign({}, props.currentUser),
             saving: false,
             errors: {}
         };
@@ -42,13 +42,13 @@ class SignUpPage extends React.Component {
             return;
         }
         this.setState({errors: {}, saving: true});
-        this.props.actions.createUser(this.state.user)
+        this.props.actions.registerUser(this.state.user)
             .then((error) => {
                 if (error) {
                     return this.setState({errors: {form: error}, saving: false});
                 }
                 this.setState({saving: false});
-                browserHistory.push('/home');
+                browserHistory.push('/profile');
             });
     }
     render() {
@@ -64,15 +64,17 @@ class SignUpPage extends React.Component {
     }
 }
 SignUpPage.propTypes = {
-    user: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
-    let user = state.user.length ? state.user : {firstName: 'Test', lastName: 'Test', password: 'a123', confirm: 'a123'};
+    let currentUser = {email: 'admin@smp.com', password: 'admin123', confirm: 'admin123'};
+
+    console.log(state);
 
     return {
-        user: user
+        currentUser: currentUser
     };
 }
 function mapDispatchToProps(dispatch) {

@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 const InputField = ({type = 'text', name, label, value = '', onChange, error}) => {
     return (
-        <div>
-            <label htmlFor={name}>{label}</label><br/>
+        <div className="form-element">
+            <label htmlFor={name}>{label}</label>
             <input 
                 type={type}
                 name={name}
                 onChange={onChange}
                 value={value}
-            /><br/>
+            />
             {error && <p>{error}</p>}
         </div>
     );

@@ -1,55 +1,53 @@
 import * as types from './actionTypes';
 import userApi from '../api/userApi';
+import {authenticateUser} from './authActions';
 
-export function loginUserSuccess(user) {
-    return {type: types.LOGIN_USER_SUCCESS, user};
+export function registerUserSuccess(currentUser) {
+    return {type: types.REGISTER_USER_SUCCESS, currentUser};
 }
-export function createUserSuccess(user) {
-    return {type: types.CREATE_USER_SUCCESS, user};
+export function loginUserSuccess(currentUser) {
+    return {type: types.LOGIN_USER_SUCCESS, currentUser};
+}
+export function logoutUserSuccess() {
+    return {type: types.LOGOUT_USER_SUCCESS};
 }
 export function updateUserSuccess(user) {
     return {type: types.UPDATE_USER_SUCCESS, user};
 }
-export function loadUserSuccess(users) {
-    return {type: types.LOAD_USER_SUCCESS, users};
-}
 
+export function registerUser(user) {
+    return (dispatch, getState) => {
+        return userApi.registerUser(user).then(({user, token}) => {
+            dispatch(authenticateUser(token));
+            dispatch(registerUserSuccess(user));
+        }).catch(error => error);
+    }
+}
 export function loginUser(user) {
     return (dispatch, getState) => {
-        return userApi.loginUser(user).then(user => {
-            // dispatch add user to localStorage?
+        return userApi.loginUser(user).then(({user, token}) => {
+            dispatch(authenticateUser(token));
             dispatch(loginUserSuccess(user));
         }).catch(error => {
             return error;
-        })
+        });
     }
 }
-export function createUser(user) {
+export function logoutUser() {
     return (dispatch, getState) => {
-        return userApi.saveUser(user).then(savedUser => {
-            // create new session plugin and add/update it when user makes changes in updateuser
-            // different action: createSessionuser or something
-            dispatch(createUserSuccess(savedUser));
-        }).catch(error => {
-            return error;
-        })
+        return new Promise((resolve, reject) => {
+            localStorage.clear();
+            dispatch(logoutUserSuccess());
+            resolve();
+        }).catch(error => error);
     }
 }
 export function updateUser(user) {
     return (dispatch, getState) => {
-        return userApi.saveUser(user).then(savedUser => {
-            dispatch(updateUserSuccess(savedUser));
+        return userApi.updateUser(user).then(updatedUser => {
+            dispatch(updateUserSuccess(updatedUser));
         }).catch(error => {
-            throw(error);
-        })
-    }
-}
-export function loadUser() {
-    return (dispatch, getState) => {
-        return userApi.getAllUsers().then(users => {
-            dispatch(loadUserSuccess(users));
-        }).catch(error => {
-            throw(error);
+            return error;
         })
     }
 }
