@@ -4,6 +4,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var User = require('./src/models/user');
+var Visit = require('./src/models/visit');
 var counter = require('./src/models/counter');
 var Hashids = require('hashids');
 var jwt = require('./server/services/jwt');
@@ -62,7 +63,7 @@ router.route('/signup').post((req, res) => {
 
 router.route('/user').put((req, res) => {
     let newUser = req.body;
-    
+
     User.findById(newUser._id, (err, user) => {
         if (err) {
             return res.send(err);
@@ -114,6 +115,52 @@ router.route('/auth').post((req, res) => {
         res.status(200).json(stripPass(user));
     });
 });
+
+
+
+router.route('/hsid/visit').post((req, res) => {
+    User.findByHsid(req.body.hsid, (err, user) => {
+        if (!user) {
+            return res.status(401).send({error: 'No user found'});
+        }
+        let visit = new Visit({
+            original_user_id: user._id,
+            hsid: req.body.hsid,
+            channel: req.body.channel
+        });
+
+        // sill spam visits, control is in the sessionStorage -> visitHsidString
+        // allow one for each in each session so that someone can still come in through
+        //     all of one person's mediums
+
+        Visit.findOne({original_user_id: user._id}, (err, vis) => {
+            visit.save(err => {
+                if (err) {
+                    return res.send(err); 
+                }
+                return res.status(200).json(visit);
+            });
+            console.log(vis);
+        }).then(res => {
+            console.log(res, 'sds')
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function createSendToken(user, res) {
     let payload = {

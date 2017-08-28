@@ -7,9 +7,7 @@ import {loadAuthUser} from './actions/authActions';
 import routes from './routes';
 
 const store = configureStore();
-
 let token = localStorage.getItem('userToken');
-console.log(token);
 
 if (token && token !== undefined) {
     store.dispatch(loadAuthUser(token));
