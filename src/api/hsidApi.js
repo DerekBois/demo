@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 class HsidApi {
-    static registerHsid(hsid, channel) {
+    static registerHsid(hsid, channel, currentUser) {
         return new Promise((resolve, reject) => {
             console.log(hsid, channel);
 
             axios.post('http://localhost:3001/api/hsid/visit', {hsid, channel})
                 .then(res => {
-                    console.log(res);
-
+                    console.log(res.data);
+                    // resolve(res.data.original_user_id);
                 }).catch(err => reject(err));
 
 

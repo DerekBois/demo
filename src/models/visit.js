@@ -8,33 +8,32 @@ var VisitSchema = new Schema({
     visit_date: {type: Date, default: Date.now}
 });
 
-VisitSchema.pre('save', function(next) {
-    var user = this;
+// VisitSchema.pre('save', function(next) {
+//     var user = this;
 
 
 
 
-    // will have hsid
-    // define channel
-    // find orignal contact by hsid, define original user
-    // 
+//     // will have hsid
+//     // define channel
+//     // find orignal contact by hsid, define original user
 
 
-    next();
+//     next();
 
 
-    // if (!user.isModified('password')) return next();
+//     // if (!user.isModified('password')) return next();
 
-    // bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    //     if (err) return next(err);
+//     // bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+//     //     if (err) return next(err);
 
-    //     bcrypt.hash(user.password, salt, function(err, hash) {
-    //         if (err) return next(err);
+//     //     bcrypt.hash(user.password, salt, function(err, hash) {
+//     //         if (err) return next(err);
 
-    //         user.password = hash;
-    //         next();
-    //     });
-    // });
-});
+//     //         user.password = hash;
+//     //         next();
+//     //     });
+//     // });
+// });
 
 module.exports = mongoose.model('Visit', VisitSchema);

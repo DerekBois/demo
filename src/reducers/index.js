@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
 import currentUser from './userReducer';
 import auth from './authReducer';
-import hsid from './hsidReducer';
+import visit from './hsidReducer';
 
 const rootReducer = combineReducers({
     currentUser,
     auth,
-    hsid
+    visit
 });
 export default rootReducer;

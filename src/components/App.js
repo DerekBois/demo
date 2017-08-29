@@ -10,8 +10,6 @@ class App extends React.Component {
 
         if (query.hsid) {
             this.props.dispatch(registerHsid(query.hsid));
-            
-            let [channel, ...rest] = query.hsid;
 
             if (query.r) {
                 return browserHistory.push(query.r);

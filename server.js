@@ -129,10 +129,6 @@ router.route('/hsid/visit').post((req, res) => {
             channel: req.body.channel
         });
 
-        // sill spam visits, control is in the sessionStorage -> visitHsidString
-        // allow one for each in each session so that someone can still come in through
-        //     all of one person's mediums
-
         Visit.findOne({original_user_id: user._id}, (err, vis) => {
             visit.save(err => {
                 if (err) {
@@ -140,10 +136,20 @@ router.route('/hsid/visit').post((req, res) => {
                 }
                 return res.status(200).json(visit);
             });
-            console.log(vis);
         }).then(res => {
             console.log(res, 'sds')
         });
+    });
+});
+
+
+
+router.route('/hsid/visit').delete((req, res) => {
+    Visit.remove((err, vis) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({message: `Visits deleted`});
     });
 });
 
