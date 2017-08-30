@@ -12,18 +12,8 @@ var UserSchema = new Schema({
     created: {type: Date, default: Date.now}
 });
 
-
-// influenced: [
-//     {
-//         influenced_id: String,
-//         influenced_created: Date
-//     }
-// ]
-
 UserSchema.pre('save', function(next) {
     var user = this;
-
-    console.log('Comments on user.js');
 
     if (!user.isModified('password')) return next();
 

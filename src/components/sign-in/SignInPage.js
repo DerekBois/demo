@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SignInForm from './SignInForm';
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as userActions from '../../actions/userActions';
@@ -54,13 +54,17 @@ class SignInPage extends React.Component {
     }
     render() {
         return (
-            <SignInForm 
-                user={this.state.user}
-                onChange={this.onChange}
-                onSubmit={this.onSubmit}
-                saving={this.state.saving}
-                errors={this.state.errors}
-            />
+            <div>
+                <SignInForm 
+                    user={this.state.user}
+                    onChange={this.onChange}
+                    onSubmit={this.onSubmit}
+                    saving={this.state.saving}
+                    errors={this.state.errors}
+                />
+                <br />
+                Already have an account? Sign up <Link to="/sign-up">here</Link>
+            </div>
         );
     }
 }

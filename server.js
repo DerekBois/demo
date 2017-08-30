@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var User = require('./src/models/user');
 var Visit = require('./src/models/visit');
+var Influencer = require('./src/models/influencer');
 var counter = require('./src/models/counter');
 var Hashids = require('hashids');
 var jwt = require('./server/services/jwt');
@@ -56,6 +57,39 @@ router.route('/signup').post((req, res) => {
             newUser.hashId = hashids.encode(num);
             newUser.save(err => {
                 createSendToken(newUser, res);
+            });
+        });
+    });
+});
+
+router.route('/influence').post((req, res) => {
+    let influencer,
+        influenced = {
+            influencedId: req.body.newUserId,
+            channel: req.body.channel
+        };
+
+    User.findByHsid(req.body.hsid, (err, user) => {
+        if (err) {
+            return res.send(err);
+        }
+        if (!user) {
+            return res.status(401).send({error: 'No user found'});
+        }
+
+        Influencer.findOne({influencerId: user._id}, (err, existingInfluencer) => {
+            if (!existingInfluencer) {
+                influencer = new Influencer({
+                    influencerId: user._id,
+                    influenced: [influenced]
+                })
+            }
+            if (existingInfluencer) {
+                influencer = existingInfluencer;
+                influencer.influenced = [...influencer.influenced, influenced];
+            }
+            influencer.save(err => {
+                res.json({message: 'Influencer Created'});
             });
         });
     });
@@ -116,8 +150,6 @@ router.route('/auth').post((req, res) => {
     });
 });
 
-
-
 router.route('/hsid/visit').post((req, res) => {
     User.findByHsid(req.body.hsid, (err, user) => {
         if (!user) {
@@ -130,19 +162,18 @@ router.route('/hsid/visit').post((req, res) => {
         });
 
         Visit.findOne({original_user_id: user._id}, (err, vis) => {
+            if (err) {
+                return res.send(err); 
+            }
             visit.save(err => {
                 if (err) {
                     return res.send(err); 
                 }
                 return res.status(200).json(visit);
             });
-        }).then(res => {
-            console.log(res, 'sds')
         });
     });
 });
-
-
 
 router.route('/hsid/visit').delete((req, res) => {
     Visit.remove((err, vis) => {

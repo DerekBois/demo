@@ -82,7 +82,6 @@ ProfilePage.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    console.log(state);
     return {
         currentUser: state.currentUser
     };

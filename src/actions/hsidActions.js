@@ -10,22 +10,25 @@ const channels = {
 
 const storage = {
     hsidSet(hsidString) {
-        if (sessionStorage.getItem('hsidString')) {
-            let stored = sessionStorage.getItem('hsidString').split(',');
+        if (localStorage.getItem('hsidString')) {
+            let stored = localStorage.getItem('hsidString').split(',');
 
             if (stored.includes(hsidString)) {
                 return false;
             }
             hsidString = [hsidString, ...stored].join(',')
         }
-        sessionStorage.setItem('hsidString', hsidString);
+        localStorage.setItem('hsidString', hsidString);
         return true;
     }
 };
 
-export function registerHsidSuccess(hsid, originalUser) {
-    return {type: types.REGISTER_HSID_SUCCESS, visit: {hsid, originalUser}};
+export function registerHsidSuccess(hsid) {
+    return {type: types.REGISTER_HSID_SUCCESS, hsid};
 }
+// export function registerHsidSuccess(hsid) {
+//     return {type: types.INFLUENCE_USER_SUCCESS, hsid};
+// }
 
 export function registerHsid(hsidString) {
     return (dispatch, getState) => {
@@ -33,21 +36,37 @@ export function registerHsid(hsidString) {
             channel = c.toUpperCase(),
             hsid = o.join('');
 
-        if (storage.hsidSet(hsidString) && (channel !== channels.CONTACT)) {
-            console.log(sessionStorage);
-            return hsidApi.registerHsid(hsid, channel).then((user) => {
-                dispatch(registerHsidSuccess(hsidString, user));
+        if (channel === channels.CONTACT) {
+            return;
+        }
+        if (storage.hsidSet(hsidString)) {
+            return hsidApi.registerHsid(hsid, channel).then(() => {
+                dispatch(registerHsidSuccess(hsidString));
             }).catch(error => error);
         }
-
-        // register visit, if contact create, register influencer
-
-        // maybe create new collection for visits/contacts
-
-        // pass hsid through reducer so that it can determine if a contact is created
-
-        // if new contact is created, need to pass on influencer contact during contact create
-
-
+        return dispatch(registerHsidSuccess(hsidString));
     }
 }
+
+
+
+
+
+export function influenceUser(userId, hsidString) {
+    return (dispatch, getState) => {
+        let [c, ...o] = hsidString,
+            channel = c.toUpperCase(),
+            hsid = o.join('');
+
+        if (channel === channels.CONTACT) {
+            return;
+        }
+        return hsidApi.influenceUser(userId, hsid, channel).then(() => {
+            console.log('affdfsafdsafsadds');
+            // dispatch(registerHsidSuccess(hsidString));
+        }).catch(error => error);
+    }
+}
+
+
+

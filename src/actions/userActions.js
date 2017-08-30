@@ -1,6 +1,7 @@
 import * as types from './actionTypes';
 import userApi from '../api/userApi';
 import {authenticateUser} from './authActions';
+import {influenceUser} from './hsidActions';
 
 export function registerUserSuccess(currentUser) {
     return {type: types.REGISTER_USER_SUCCESS, currentUser};
@@ -17,9 +18,21 @@ export function updateUserSuccess(user) {
 
 export function registerUser(user) {
     return (dispatch, getState) => {
+        let state = getState(),
+            visitHsid;
+
+        if (state.hsid) {
+            visitHsid = state.hsid;
+            user = {visitHsid, ...user};
+        }
         return userApi.registerUser(user).then(({user, token}) => {
             dispatch(authenticateUser(token));
             dispatch(registerUserSuccess(user));
+            return user;
+        }).then((registeredUser) => {
+            if (state.hsid) {
+                dispatch(influenceUser(registeredUser._id, state.hsid));
+            }
         }).catch(error => error);
     }
 }

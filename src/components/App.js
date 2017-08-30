@@ -6,7 +6,8 @@ import {registerHsid} from '../actions/hsidActions';
 
 class App extends React.Component {
     componentWillMount() {
-        let query = this.props.location.query;
+        let query = this.props.location.query,
+            hsid = localStorage.getItem('hsidString');
 
         if (query.hsid) {
             this.props.dispatch(registerHsid(query.hsid));
@@ -14,6 +15,10 @@ class App extends React.Component {
             if (query.r) {
                 return browserHistory.push(query.r);
             }
+            return;
+        }
+        if (hsid && hsid !== undefined) {
+            return this.props.dispatch(registerHsid(hsid));
         }
     }
 

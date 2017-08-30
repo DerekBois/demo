@@ -49,7 +49,6 @@ AuthContainer.propTypes = {
     children: PropTypes.object.isRequired
 };
 function mapStateToProps(state, ownProps) {
-    console.log(state);
     return {
         auth: state.auth,
         currentUser: state.currentUser

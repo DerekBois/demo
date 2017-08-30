@@ -25,13 +25,12 @@ class UserApi {
     }
     static registerUser({email, password}) {
         return new Promise((resolve, reject) => {
-            axios.post('http://localhost:3001/api/signup/', {email, password})
-                .then(res => {
-                    if (res.data.error) {
-                        return reject(res.data.error);
-                    }
-                    resolve(res.data);
-                }).catch(err => reject(err));
+            axios.post('http://localhost:3001/api/signup/', {email, password}).then(res => {
+                if (res.data.error) {
+                    return reject(res.data.error);
+                }
+                return resolve(res.data);
+            }).catch(err => reject(err));
         })
     }
     static updateUser(user) {
@@ -55,7 +54,6 @@ class UserApi {
     //     });
     // }
 
-
     // static saveUser(user) {
     //     user = Object.assign({}, user);
     //     return new Promise((resolve, reject) => {
@@ -71,14 +69,6 @@ class UserApi {
     //             }).catch(err => reject(err));
     //     });
     // }
-
-
-
-
-
-
-
-
 
     // static deleteUser(userId) {
     //     return new Promise((resolve, reject) => {

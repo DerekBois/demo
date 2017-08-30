@@ -7,11 +7,14 @@ import {loadAuthUser} from './actions/authActions';
 import routes from './routes';
 
 const store = configureStore();
+
 let token = localStorage.getItem('userToken');
 
 if (token && token !== undefined) {
     store.dispatch(loadAuthUser(token));
 }
+
+
 render(
     <Provider store={store}>
         <Router history={browserHistory} routes={routes} />

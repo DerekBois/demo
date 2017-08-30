@@ -2,11 +2,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var InfluencerSchema = new Schema({
-    influencer_id: String,
+    influencerId: String,
     influenced: [{
-        influenced_id: String,
+        influencedId: String,
         channel: String,
-        visit_date: {type: Date, default: Date.now}
+        signUpDate: {type: Date, default: Date.now}
     }]
 });
 
