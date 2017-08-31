@@ -12,8 +12,8 @@ export function loginUserSuccess(currentUser) {
 export function logoutUserSuccess() {
     return {type: types.LOGOUT_USER_SUCCESS};
 }
-export function updateUserSuccess(user) {
-    return {type: types.UPDATE_USER_SUCCESS, user};
+export function updateUserSuccess(currentUser) {
+    return {type: types.UPDATE_USER_SUCCESS, currentUser};
 }
 
 export function registerUser(user) {

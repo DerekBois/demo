@@ -1,12 +1,6 @@
 import * as types from './actionTypes';
+import {channels} from '../constants';
 import hsidApi from '../api/hsidApi';
-
-const channels = {
-    CONTACT: 'C',
-    FACEBOOK: 'F',
-    TWITTER: 'T',
-    LINKEDIN: 'L'
-}
 
 const storage = {
     hsidSet(hsidString) {

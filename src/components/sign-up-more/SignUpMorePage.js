@@ -1,22 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SignUpForm from './SignUpForm';
+import SignUpMoreForm from './SignUpMoreForm';
 import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as userActions from '../../actions/userActions';
 
-class SignUpPage extends React.Component {
+class SignUpMorePage extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            user: Object.assign({}, props.currentUser),
+            user: Object.assign({}, this.props.currentUser),
             saving: false,
             errors: {}
         };
         this.formIsValidated = this.formIsValidated.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+    componentWillMount() {
+        if (!this.state.user.email) {
+            browserHistory.push('/sign-up');
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.user !== nextProps.user) {
+            this.setState({user: Object.assign({}, nextProps.user)});
+        }
     }
     formIsValidated() {
         let errors = {},
@@ -42,18 +52,18 @@ class SignUpPage extends React.Component {
             return;
         }
         this.setState({errors: {}, saving: true});
-        this.props.actions.registerUser(this.state.user)
-            .then((error) => {
-                if (error) {
-                    return this.setState({errors: {form: error}, saving: false});
-                }
-                this.setState({saving: false});
-                browserHistory.push('/sign-up-more');
-            });
+
+        this.props.actions.updateUser(this.state.user).then((error) => {
+            if (error) {
+                return this.setState({errors: {form: error}, saving: false});
+            }
+            this.setState({saving: false});
+            browserHistory.push('/profile');
+        });
     }
     render() {
         return (
-            <SignUpForm 
+            <SignUpMoreForm 
                 user={this.state.user}
                 onChange={this.onChange}
                 onSubmit={this.onSubmit}
@@ -63,18 +73,14 @@ class SignUpPage extends React.Component {
         );
     }
 }
-SignUpPage.propTypes = {
+SignUpMorePage.propTypes = {
     currentUser: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
-    let currentUser = {email: 'admin@smp.com', password: 'admin123', confirm: 'admin123'};
-
-    console.log(state);
-
     return {
-        currentUser: currentUser
+        currentUser: state.currentUser
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -83,4 +89,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpMorePage);

@@ -3,9 +3,6 @@ import * as types from '../actions/actionTypes';
 
 export default function userReducer(state = initialState.currentUser, action) {
     switch (action.type) {
-        // case types.LOAD_CURRENT_USER_SUCCESS:
-        //     return action.currentUser;
-        
         case types.LOGIN_USER_SUCCESS:
             return action.currentUser;
 
@@ -15,8 +12,8 @@ export default function userReducer(state = initialState.currentUser, action) {
         case types.REGISTER_USER_SUCCESS:
             return action.currentUser;
 
-        // case types.UPDATE_USER_SUCCESS:
-        //     return action.currentUser;
+        case types.UPDATE_USER_SUCCESS:
+            return action.currentUser;
 
         default:
             return state;

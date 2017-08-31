@@ -14,7 +14,6 @@ if (token && token !== undefined) {
     store.dispatch(loadAuthUser(token));
 }
 
-
 render(
     <Provider store={store}>
         <Router history={browserHistory} routes={routes} />
