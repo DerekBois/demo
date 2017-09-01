@@ -8,6 +8,12 @@ var UserSchema = new Schema({
     lastName: String,
     email: String,
     password: String,
+    city: String,
+    state: String,
+    country: String,
+    birthdayDay: Number,
+    birthdayMonth: Number,
+    birthdayYear: Number,
     hashId: String,
     created: {type: Date, default: Date.now}
 });

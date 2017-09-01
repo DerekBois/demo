@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SignUpMoreForm from './SignUpMoreForm';
-import {browserHistory} from 'react-router';
+import ProfileInfoForm from './ProfileInfoForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {SIGN_UP_TARGET} from '../../constants';
-import * as userActions from '../../actions/userActions';
+import * as userActions from '../../../actions/userActions';
 
-class SignUpMorePage extends React.Component {
+class ProfileInfo extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -18,11 +16,6 @@ class SignUpMorePage extends React.Component {
         this.formIsValidated = this.formIsValidated.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-    }
-    componentWillMount() {
-        if (!this.state.user.email) {
-            browserHistory.push('/sign-up');
-        }
     }
     componentWillReceiveProps(nextProps) {
         if (this.props.user !== nextProps.user) {
@@ -41,45 +34,51 @@ class SignUpMorePage extends React.Component {
         return valid;
     }
     onChange(e) {
-        let user = Object.assign({}, this.state.user);
+        let user = Object.assign({}, this.state.user),
+            submitBtn = e.target.form.elements.submit,
+            value = e.target.value;
 
-        user[e.target.name] = e.target.value;
+        if (e.target.type === 'checkbox') {
+            value = e.target.checked;
+        }
+        if (submitBtn.classList.contains('inactive')) {
+            submitBtn.classList.remove('inactive')
+        }
+        user[e.target.name] = value;
         this.setState({user: user});
     }
     onSubmit(e) {
         e.preventDefault();
 
+        let submitBtn = e.target.elements.submit;
+
+        if (!submitBtn.classList.contains('inactive')) {
+            submitBtn.classList.add('inactive')
+        }
         if (!this.formIsValidated()) {
             return;
         }
         this.setState({errors: {}, saving: true});
-
         this.props.actions.updateUser(this.state.user).then((error) => {
             if (error) {
                 return this.setState({errors: {form: error}, saving: false});
             }
             this.setState({saving: false});
-            browserHistory.push(SIGN_UP_TARGET);
         });
     }
     render() {
         return (
-            <div className="site-wrapper full-page">
-                <div className="col-uno"></div>
-                <div className="full-form">
-                    <SignUpMoreForm 
-                        user={this.state.user}
-                        onChange={this.onChange}
-                        onSubmit={this.onSubmit}
-                        saving={this.state.saving}
-                        errors={this.state.errors}
-                    />
-                </div>
-            </div>
+            <ProfileInfoForm 
+                user={this.state.user}
+                onChange={this.onChange}
+                onSubmit={this.onSubmit}
+                saving={this.state.saving}
+                errors={this.state.errors}
+            />
         );
     }
 }
-SignUpMorePage.propTypes = {
+ProfileInfo.propTypes = {
     currentUser: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };
@@ -95,4 +94,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpMorePage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);

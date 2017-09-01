@@ -53,13 +53,18 @@ class SignUpPage extends React.Component {
     }
     render() {
         return (
-            <SignUpForm 
-                user={this.state.user}
-                onChange={this.onChange}
-                onSubmit={this.onSubmit}
-                saving={this.state.saving}
-                errors={this.state.errors}
-            />
+            <div className="site-wrapper full-page">
+                <div className="col-uno"></div>
+                <div className="full-form">
+                    <SignUpForm 
+                        user={this.state.user}
+                        onChange={this.onChange}
+                        onSubmit={this.onSubmit}
+                        saving={this.state.saving}
+                        errors={this.state.errors}
+                    />
+                </div>
+            </div>
         );
     }
 }

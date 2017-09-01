@@ -1,26 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const InputField = ({type = 'text', name, label, value = '', onChange, error}) => {
+const CheckboxField = ({name, label, value = false, onChange, error}) => {
     return (
-        <div className="form-element">
-            <label htmlFor={name}>{label}</label>
+        <div className="form-element checkbox-wrapper">
             <input 
-                type={type}
+                type="checkbox"
                 name={name}
                 onChange={onChange}
-                value={value}
+                checked={value}
             />
+            <label htmlFor={name}>{label}</label>
             {error && <p>{error}</p>}
         </div>
     );
 };
-InputField.propTypes = {
+CheckboxField.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     error: PropTypes.string
 };
-export default InputField;
+export default CheckboxField;

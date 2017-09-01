@@ -113,6 +113,25 @@ router.route('/user').put((req, res) => {
     });
 });
 
+
+router.route('/user/:email').get((req, res) => {
+    User.find({email: req.params.email}, (err, user) => {
+        if (err) {
+            return res.send(err);
+        }
+        res.json(user);
+    });
+});
+router.route('/user/:email').delete((req, res) => {
+    User.remove({email: req.params.email}, (err, user) => {
+        if (err) {
+            return res.send(err);
+        }
+        res.json({message: `Users deleted`});
+    });
+});
+
+
 router.route('/login').post((req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if (err) {
@@ -181,6 +200,15 @@ router.route('/hsid/visit').delete((req, res) => {
             res.send(err);
         }
         res.json({message: `Visits deleted`});
+    });
+});
+
+router.route('/users').delete((req, res) => {
+    User.remove((err, vis) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({message: `Users deleted`});
     });
 });
 

@@ -22,8 +22,6 @@ class AuthContainer extends React.Component {
     logout(e) {
         e.preventDefault();
 
-        console.log(e);
-
         this.props.actions.logoutUser().then(res => {
             browserHistory.push('/');
         });
@@ -35,7 +33,7 @@ class AuthContainer extends React.Component {
                     <Header 
                         user={this.props.currentUser}
                     />
-                    <button type="button" onClick={this.logout}>Logout</button>
+                    <button type="button" className="btn logout" onClick={this.logout}>Logout</button>
                     {this.props.children}
                 </div>
             );

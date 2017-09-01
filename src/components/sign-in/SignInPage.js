@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SignInForm from './SignInForm';
-import {browserHistory, Link} from 'react-router';
+import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {SIGN_IN_TARGET} from '../../constants';
 import * as userActions from '../../actions/userActions';
 
 class SignInPage extends React.Component {
@@ -49,21 +50,22 @@ class SignInPage extends React.Component {
                     return this.setState({errors: {form: error}, saving: false});
                 }
                 this.setState({saving: false});
-                browserHistory.push('/profile');
+                browserHistory.push(SIGN_IN_TARGET);
             });
     }
     render() {
         return (
-            <div>
-                <SignInForm 
-                    user={this.state.user}
-                    onChange={this.onChange}
-                    onSubmit={this.onSubmit}
-                    saving={this.state.saving}
-                    errors={this.state.errors}
-                />
-                <br />
-                Already have an account? Sign up <Link to="/sign-up">here</Link>
+            <div className="site-wrapper full-page">
+                <div className="col-uno"></div>
+                <div className="full-form">
+                    <SignInForm 
+                        user={this.state.user}
+                        onChange={this.onChange}
+                        onSubmit={this.onSubmit}
+                        saving={this.state.saving}
+                        errors={this.state.errors}
+                    />
+                </div>
             </div>
         );
     }
