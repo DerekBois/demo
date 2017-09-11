@@ -6,20 +6,20 @@ import SubNav from '../common/SubNav';
 class ProfilePage extends React.Component {
     render() {
         return (
-                <div className="site-content">
-                    <SidebarMenu
-                        path={this.props.route.path}
+            <div className="site-content">
+                <SidebarMenu
+                    path={this.props.route.path}
+                />
+                <div className="main-wrapper">
+                    <SubNav 
+                        title={this.props.route.pageTitle}
+                        path={this.props.location.pathname}
                     />
                     <div className="main">
-                        <SubNav 
-                            title={this.props.route.pageTitle}
-                            path={this.props.route.path}
-                        />
-                        <div className="thin-content">
-                            {this.props.children}
-                        </div>
+                        {this.props.children}
                     </div>
                 </div>
+            </div>
         );
     }
 }

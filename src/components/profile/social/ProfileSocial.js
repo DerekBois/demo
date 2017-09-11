@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ProfileInfoForm from './ProfileInfoForm';
+import ProfileSocialForm from './ProfileSocialForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as userActions from '../../../actions/userActions';
@@ -35,8 +35,7 @@ class ProfileInfo extends React.Component {
     }
     onChange(e) {
         let user = Object.assign({}, this.state.user),
-            fieldsSection = e.target.closest('.fields-section'),
-            submitBtn = fieldsSection.querySelector('button[type=submit]'),
+            submitBtn = e.target.form.elements.submit,
             value = e.target.value;
 
         if (e.target.type === 'checkbox') {
@@ -46,22 +45,19 @@ class ProfileInfo extends React.Component {
             submitBtn.classList.remove('inactive')
         }
         user[e.target.name] = value;
-        console.log(user)
         this.setState({user: user});
     }
     onSubmit(e) {
-        let submitBtn = e.target.querySelectorAll('button[type=submit]');
-
         e.preventDefault();
 
+        let submitBtn = e.target.elements.submit;
+
+        if (!submitBtn.classList.contains('inactive')) {
+            submitBtn.classList.add('inactive')
+        }
         if (!this.formIsValidated()) {
             return;
         }
-        [...submitBtn].forEach(btn => {
-            if (!btn.classList.contains('inactive')) {
-                btn.classList.add('inactive')
-            }
-        });
         this.setState({errors: {}, saving: true});
         this.props.actions.updateUser(this.state.user).then((error) => {
             if (error) {
@@ -72,7 +68,7 @@ class ProfileInfo extends React.Component {
     }
     render() {
         return (
-            <ProfileInfoForm 
+            <ProfileSocialForm 
                 user={this.state.user}
                 onChange={this.onChange}
                 onSubmit={this.onSubmit}
@@ -88,7 +84,6 @@ ProfileInfo.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.currentUser);
     return {
         currentUser: state.currentUser
     };

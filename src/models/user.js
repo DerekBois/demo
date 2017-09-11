@@ -14,6 +14,7 @@ var UserSchema = new Schema({
     birthdayDay: Number,
     birthdayMonth: Number,
     birthdayYear: Number,
+    publicAge: Boolean,
     hashId: String,
     created: {type: Date, default: Date.now}
 });
