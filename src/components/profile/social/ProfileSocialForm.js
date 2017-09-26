@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InputField from '../../common/form/InputField';
-import CheckboxField from '../../common/form/CheckboxField';
-import SelectField from '../../common/form/SelectField';
+// import CheckboxField from '../../common/form/CheckboxField';
+// import SelectField from '../../common/form/SelectField';
 
 const ProfileSocialForm = ({user, onChange, onSubmit, saving, errors}) => {
 

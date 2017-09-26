@@ -34,6 +34,7 @@ class ProfileInfo extends React.Component {
         return valid;
     }
     onChange(e) {
+
         let user = Object.assign({}, this.state.user),
             fieldsSection = e.target.closest('.fields-section'),
             submitBtn = fieldsSection.querySelector('button[type=submit]'),
@@ -45,8 +46,17 @@ class ProfileInfo extends React.Component {
         if (submitBtn.classList.contains('inactive')) {
             submitBtn.classList.remove('inactive')
         }
+        if (e.target.name.includes('.')) {
+            let splitName = e.target.name.split('.'),
+                obj = user[splitName[0]];
+
+            obj[splitName[1]] = e.target.value;
+            user[splitName[0]] = obj;
+
+            return this.setState({user: user});
+
+        }
         user[e.target.name] = value;
-        console.log(user)
         this.setState({user: user});
     }
     onSubmit(e) {
@@ -62,6 +72,24 @@ class ProfileInfo extends React.Component {
                 btn.classList.add('inactive')
             }
         });
+
+
+
+
+
+        let campaigns = [...this.state.user.campaigns, {id: '12ssfd45'}];
+        let user = Object.assign({}, this.state.user, {campaigns});
+        console.log('Adding campaigns manually', user);
+
+        // add separate state and merge before save?
+
+
+
+
+
+
+
+
         this.setState({errors: {}, saving: true});
         this.props.actions.updateUser(this.state.user).then((error) => {
             if (error) {

@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SubNav from '../common/SubNav';
 
-class ProfilePage extends React.Component {
+class CampaignsPage extends React.Component {
     render() {
+        // grab campaigns and add to store -- LOAD_CAMPAIGNS
+        // Loads 
         return (
             <div className="main-wrapper">
                 <SubNav 
@@ -11,13 +13,13 @@ class ProfilePage extends React.Component {
                     path={this.props.location.pathname}
                 />
                 <div className="main">
-                    {this.props.children}
+                    {React.cloneElement(this.props.children, {campaigns: []})}
                 </div>
             </div>
         );
     }
 }
-ProfilePage.propTypes = {
+CampaignsPage.propTypes = {
     children: PropTypes.object.isRequired
 };
-export default ProfilePage;
+export default CampaignsPage;

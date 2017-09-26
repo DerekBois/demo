@@ -90,7 +90,7 @@ const ProfileInfoForm = ({user, onChange, onSubmit, saving, errors}) => {
                     label="Allow my age to be public"
                     value={user.publicAge}
                     onChange={onChange}
-                    error={errors.publicAge}
+                    error={errors.birthdayDay}
                 />
                 {errors.form && <p>{errors.form}</p>}
                 <button type="submit" name="submit" className="btn inactive">Update</button>

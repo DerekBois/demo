@@ -10,8 +10,11 @@ import SignInPage from './components/sign-in/SignInPage';
 import ProfilePage from './components/profile/ProfilePage';
 import ProfileInfo from './components/profile/info/ProfileInfo';
 import ProfileSocial from './components/profile/social/ProfileSocial';
-// import ProfileDemographicPage from './components/profile/ProfileDemographicPage';
 
+import CampaignsPage from './components/campaigns/CampaignsPage';
+import CampaignsList from './components/campaigns/list/CampaignsList';
+import CampaignDetailsPage from './components/campaigns/CampaignDetailsPage';
+import CampaignCreatePage from './components/campaigns/create/CampaignCreatePage';
 
 export default (
     <Route path="/" component={App}>
@@ -20,25 +23,20 @@ export default (
         <Route path="/sign-up-more" component={SignUpMorePage} />
         <Route component={AuthContainer}>
             <Route path="/profile" component={ProfilePage} pageTitle="Profile">
-                <IndexRoute component={ProfileInfo} />
-                <Route path="/social" component={ProfileSocial} />
+                <IndexRoute component={ProfileInfo} pageTitle="Info" />
+                <Route path="/social" component={ProfileSocial} pageTitle="Social" />
             </Route>
+
+
+            <Route path="/campaigns" component={CampaignsPage} pageTitle="Campaigns">
+                <IndexRoute component={CampaignsList} pageTitle="List"/>
+                <Route path="/social" component={ProfileSocial} pageTitle="Overview" />
+            </Route>
+
+            <Route path="/campaign/create" component={CampaignCreatePage} />
+            <Route path="/campaign/:slug" component={CampaignDetailsPage} />
+
             <Route path="/home" component={Home}/>
         </Route>
     </Route>
 );
-
-
-// <Route path="/" component={App}>
-//     <IndexRoute component={SignInPage} />
-//     <Route path="/sign-up" component={SignUpPage} />
-//     <Route path="/sign-up-more" component={SignUpMorePage} />
-//     <Route component={AuthContainer}>
-//         <Route path="/profile" component={ProfileContainer}>
-//             <IndexRoute component={ProfileInfoPage} />
-//             <Route path="/social" component={ProfileSocialPage} />
-//             <Route path="/demographic" component={ProfileDemographicPage} />
-//         </Route>
-//         <Route path="/home" component={Home}/>
-//     </Route>
-// </Route>

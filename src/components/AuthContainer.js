@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Header from './common/Header';
+import SidebarMenu from './common/SidebarMenu';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {bindActionCreators} from 'redux';
@@ -9,9 +10,6 @@ import * as userActions from '../actions/userActions';
 class AuthContainer extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {
-            user: Object.assign({}, this.props.currentUser)
-        }
         this.logout = this.logout.bind(this);
     }
     componentWillMount() {
@@ -34,7 +32,12 @@ class AuthContainer extends React.Component {
                         user={this.props.currentUser}
                     />
                     <button type="button" className="btn logout" onClick={this.logout}>Logout</button>
-                    {this.props.children}
+                    <div className="site-content">
+                        <SidebarMenu
+                            path={this.props.children.props.route.path}
+                        />
+                        {this.props.children}
+                    </div>
                 </div>
             );
         }

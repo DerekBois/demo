@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var User = require('./src/models/user');
 var Visit = require('./src/models/visit');
 var Influencer = require('./src/models/influencer');
+var UserCampaign = require('./src/models/userCampaign');
 var counter = require('./src/models/counter');
 var Hashids = require('hashids');
 var jwt = require('./server/services/jwt');
@@ -211,6 +212,65 @@ router.route('/users').delete((req, res) => {
         res.json({message: `Users deleted`});
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Campaigns */
+
+router.route('/campaign/user').post((req, res) => {
+    let campaign = new UserCampaign(req.body.campaign);
+
+    UserCampaign.findOne({title: campaign.title}, (err, c) => {
+        if (c) {
+            return res.send({error: 'A campaign by this name already exists'});
+        }
+        campaign.save(err => {
+            
+            res.send(campaign);
+        });
+    });
+
+    // let newUser = new User({
+    //     email: req.body.email,
+    //     password: req.body.password
+    // });
+
+    // User.findOne({email: newUser.email}, (err, user) => {
+    //     if (user) {
+    //         return res.send({error: 'This email already exists'});
+    //     }
+    //     counter.findOne((err, c) => {
+    //         if (!c) {
+    //             return res.send({error: 'Something went wrong with the counter in /signup'});
+    //         }
+    //         c.num++
+    //         c.save();
+    //     })
+    //     .then(({num}) => {
+    //         newUser.hashId = hashids.encode(num);
+    //         newUser.save(err => {
+    //             createSendToken(newUser, res);
+    //         });
+    //     });
+    // });
+});
+
+
+
+
 
 
 

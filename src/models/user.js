@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
+    role: {type: String, default: 'influencer'},
     firstName: String,
     lastName: String,
     email: String,
@@ -16,8 +17,26 @@ var UserSchema = new Schema({
     birthdayYear: Number,
     publicAge: Boolean,
     hashId: String,
+    campaigns: [{
+        id: String, // UserCampaign ids
+        state: {type: String, default: 'active'}
+    }],
+    sharing: [{
+        name: String,
+        followers: Number
+    }],
     created: {type: Date, default: Date.now}
 });
+
+/*
+
+Audience data
+Sharing data
+    - followers, links
+
+
+
+*/
 
 UserSchema.pre('save', function(next) {
     var user = this;
