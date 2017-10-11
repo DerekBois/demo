@@ -2,7 +2,9 @@ import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 import App from './components/App';
 import AuthContainer from './components/AuthContainer';
+
 import Home from './components/Home';
+
 import SignUpPage from './components/sign-up/SignUpPage';
 import SignUpMorePage from './components/sign-up-more/SignUpMorePage';
 import SignInPage from './components/sign-in/SignInPage';
@@ -12,9 +14,14 @@ import ProfileInfo from './components/profile/info/ProfileInfo';
 import ProfileSocial from './components/profile/social/ProfileSocial';
 
 import CampaignsPage from './components/campaigns/CampaignsPage';
-import CampaignsList from './components/campaigns/list/CampaignsList';
-import CampaignDetailsPage from './components/campaigns/CampaignDetailsPage';
-import CampaignCreatePage from './components/campaigns/create/CampaignCreatePage';
+// import CampaignsList from './components/campaigns/list/CampaignsList';
+
+
+import CampaignPage from './components/campaign/CampaignPage';
+import CampaignDetails from './components/campaign/details/CampaignDetails';
+import CampaignTracking from './components/campaign/tracking/CampaignTracking';
+
+// import CampaignCreatePage from './components/campaigns/create/CampaignCreatePage';
 
 export default (
     <Route path="/" component={App}>
@@ -26,17 +33,14 @@ export default (
                 <IndexRoute component={ProfileInfo} pageTitle="Info" />
                 <Route path="/social" component={ProfileSocial} pageTitle="Social" />
             </Route>
+            <Route path="/campaigns" component={CampaignsPage} pageTitle="Campaigns" />
 
-
-            <Route path="/campaigns" component={CampaignsPage} pageTitle="Campaigns">
-                <IndexRoute component={CampaignsList} pageTitle="List"/>
-                <Route path="/social" component={ProfileSocial} pageTitle="Overview" />
+            <Route path="/campaigns/:slug" component={CampaignPage}>
+                <IndexRoute component={CampaignDetails} pageTitle="Details"/>
+                <Route path="/tracking" component={CampaignTracking} pageTitle="Tracking" />
+                <Route path="/social" component={ProfileSocial} pageTitle="Reports" />
             </Route>
-
-            <Route path="/campaign/create" component={CampaignCreatePage} />
-            <Route path="/campaign/:slug" component={CampaignDetailsPage} />
-
-            <Route path="/home" component={Home}/>
         </Route>
+        <Route path="/home" component={Home}/>
     </Route>
 );

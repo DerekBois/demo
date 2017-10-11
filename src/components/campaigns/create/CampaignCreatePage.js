@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import CampaignCreateForm from './CampaignCreateForm';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
@@ -75,7 +75,6 @@ class CampaignCreatePage extends React.Component {
 // };
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.campaign);
     return {
         campaign: state.campaign
     };

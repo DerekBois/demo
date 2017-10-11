@@ -1,34 +1,32 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import SubNav from '../common/SubNav';
-import CampaignsList from './list/CampaignsList';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as campaignActions from '../../actions/campaignActions';
 
-class CampaignsPage extends React.Component {
+class CampaignPage extends React.Component {
     componentDidMount() {
-        this.props.actions.loadCampaigns(this.props.currentUser._id);
+        this.props.actions.loadCampaign(this.props.params.slug);
     }
     render() {
         return (
             <div className="main-wrapper">
                 <SubNav 
+                    title={this.props.campaign.details.title}
                     route={this.props.route}
                     path={this.props.location.pathname}
+                    slug={this.props.campaign.details.slug}
                 />
-                <CampaignsList 
-                    loading={this.props.campaigns.loading}
-                    campaigns={this.props.campaigns.list}
-                />
+                {this.props.children}
             </div>
         );
     }
 }
+
 function mapStateToProps(state, ownProps) {
     return {
         currentUser: state.currentUser,
-        campaigns: state.campaigns
+        campaign: state.campaign
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -36,4 +34,4 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators(campaignActions, dispatch)
     };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(CampaignsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignPage);

@@ -6,10 +6,13 @@ var bodyParser = require('body-parser');
 var User = require('./src/models/user');
 var Visit = require('./src/models/visit');
 var Influencer = require('./src/models/influencer');
-var UserCampaign = require('./src/models/userCampaign');
+var CustomCampaign = require('./src/models/customCampaign');
+var SponsorCampaign = require('./src/models/sponsorCampaign');
 var counter = require('./src/models/counter');
 var Hashids = require('hashids');
 var jwt = require('./server/services/jwt');
+var fs = require('fs');
+
 
 var API_SECRET = 'shh...';
 
@@ -18,11 +21,12 @@ var router = express.Router();
 
 var port = process.env.API_PORT || 3001;
 
+
+
 mongoose.connect('mongodb://derek:2909800@ds127968.mlab.com:27968/influencer-app');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -230,56 +234,95 @@ router.route('/users').delete((req, res) => {
 
 /* Campaigns */
 
-router.route('/campaign/user').post((req, res) => {
-    let campaign = new UserCampaign(req.body.campaign);
 
-    UserCampaign.findOne({title: campaign.title}, (err, c) => {
+
+// create new sponsor campaign
+
+// router.route('/campaign/sponsor').post((req, res) => {
+//     console.log(req.body);
+//     let campaign = new SponsorCampaign(req.body.campaign);
+
+//     CustomCampaign.findOne({title: campaign.title}, (err, c) => {
+//         if (c) {
+//             return res.send({error: 'A campaign by this name already exists'});
+//         }
+//         campaign.save(err => {
+            
+//             res.send(campaign);
+//         });
+//     });
+// });
+
+
+/* create new user campaign */
+
+router.route('/campaign/user').post((req, res) => {
+    let campaign = new CustomCampaign(req.body.campaign);
+
+    CustomCampaign.findOne({title: campaign.title}, (err, c) => {
         if (c) {
             return res.send({error: 'A campaign by this name already exists'});
         }
         campaign.save(err => {
-            
             res.send(campaign);
         });
     });
+});
 
-    // let newUser = new User({
-    //     email: req.body.email,
-    //     password: req.body.password
-    // });
+// get campaign by slug
 
-    // User.findOne({email: newUser.email}, (err, user) => {
-    //     if (user) {
-    //         return res.send({error: 'This email already exists'});
-    //     }
-    //     counter.findOne((err, c) => {
-    //         if (!c) {
-    //             return res.send({error: 'Something went wrong with the counter in /signup'});
-    //         }
-    //         c.num++
-    //         c.save();
-    //     })
-    //     .then(({num}) => {
-    //         newUser.hashId = hashids.encode(num);
-    //         newUser.save(err => {
-    //             createSendToken(newUser, res);
-    //         });
-    //     });
-    // });
+router.route('/campaign/:slug').get((req, res) => {
+    CustomCampaign.findOne({slug: req.params.slug}, (err, campaign) => {
+        if (err) {
+            return res.send(err);
+        }
+        res.send(campaign);
+    });
+});
+
+/* update campaign */
+
+router.route('/campaigns').put((req, res) => {
+
+
+
+
+
+
+
+
+    CustomCampaign.findById(req.body.campaign._id, (err, campaign) => {
+        if (err) {
+            console.log(err);
+            //return res.send(err);
+        }
+
+
+
+
+
+
+
+
+        console.log(campaign);
+        console.log(req.body.campaign);
+
+        //res.send(campaigns);
+    });
 });
 
 
 
+// get all campaigns by user id
 
-
-
-
-
-
-
-
-
-
+router.route('/campaigns/:user_id').get((req, res) => {
+    CustomCampaign.find({user: req.params.user_id}, 'title description slug', (err, campaigns) => {
+        if (err) {
+            return res.send(err);
+        }
+        res.send(campaigns);
+    });
+});
 
 
 

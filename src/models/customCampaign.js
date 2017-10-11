@@ -14,6 +14,7 @@ var UserCampaignSchema = new mongoose.Schema({
 });
 
 UserCampaignSchema.pre('save', function(next) {
+    console.log('Pre save');
     // if (!this.isModified('slug')) return next();
 
     this.slug = slugify(this.title);

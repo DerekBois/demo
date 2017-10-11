@@ -1,73 +1,25 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router';
 import CampaignCard from './CampaignCard';
 
-const CampaignsList = (props) => {
-    console.log(props);
-    let campaigns = [
-        {
-            state: 'active',
-            title: 'Campaign One',
-            slug: 'campaign-one',
-            description: 'The first of the campaigns',
-            hashtag: '#campaignone',
-            body: 'This is a whole bunch of body content for the campaign that I\'m typing because I don\'t want to deal with lorem ipsum',
-            targetUrl: 'http://target-url.com',
-            sponsor: 'Tim Hortons',
-            images: [
-                'https://static.pexels.com/photos/34950/pexels-photo.jpg',
-                'https://www.w3schools.com/css/trolltunga.jpg',
-                'http://www.planwallpaper.com/images#static/images/beautiful-sunset-images-196063.jpg'
-            ]
-        },
-        {
-            state: 'active',
-            title: 'Campaign Two',
-            slug: 'campaign-two',
-            description: 'The second of the campaigns',
-            hashtag: '#campaigntwo',
-            body: 'This is a whole bunch of body content for the campaign that I\'m typing because I don\'t want to deal with lorem ipsum',
-            targetUrl: 'http://target-url.com',
-            sponsor: 'Toys \'R\' Us',
-            images: [
-                'https://static.pexels.com/photos/34950/pexels-photo.jpg',
-                'https://www.w3schools.com/css/trolltunga.jpg',
-                'http://www.planwallpaper.com/images#static/images/beautiful-sunset-images-196063.jpg'
-            ]
-        },
-        {
-            state: 'active',
-            title: 'Campaign Three',
-            slug: 'campaign-three',
-            description: 'The third of the campaigns',
-            hashtag: '#campaignthree',
-            body: 'This is a whole bunch of body content for the campaign that I\'m typing because I don\'t want to deal with lorem ipsum',
-            targetUrl: 'http://target-url.com',
-            sponsor: 'Toys \'R\' Us',
-            images: [
-                'https://static.pexels.com/photos/34950/pexels-photo.jpg',
-                'https://www.w3schools.com/css/trolltunga.jpg',
-                'http://www.planwallpaper.com/images#static/images/beautiful-sunset-images-196063.jpg'
-            ]
-        }
-    ];
-
+const CampaignsList = ({campaigns = [], loading = false}) => {
     return (
-        <div>
-            <h1>Campaigns List</h1>
-            <div className="campaign-cards">
-                {campaigns.map((campaign, i) => {
-                    return (
-                        <CampaignCard key={i} {...campaign}/>
-                    );
-                })}
-                <Link to="/campaign/create">Create Campaign</Link>
+        <div className="main">
+            <div className="text-header">
+                <h2>Select a campaign</h2>
+                <p>Understanding your influencer campaign analytics doesn’t need to be daunting, we make designing a public profile, tracking hashtags, clicks to your blog, and the number of impressions and engagement on your social posts quick and easy. Let's create your first campaign and public profile!</p>
             </div>
+            {loading ? <div className="loading"><h1>Loading...</h1></div> : // replace with component
+                <div className="campaign-cards">
+                    {campaigns.map((campaign, i) => <CampaignCard key={i} {...campaign}/>)}
+                    <Link to="/campaign/create" className="add-campaign"><span>+</span></Link>
+                </div>
+            }
         </div>
     );
 }
-// CampaignsList.propTypes = {
-    // children: PropTypes.object.isRequired
-// };
+CampaignsList.propTypes = {
+    campaigns: PropTypes.array
+};
 export default CampaignsList;

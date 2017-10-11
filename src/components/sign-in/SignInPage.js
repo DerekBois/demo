@@ -56,7 +56,6 @@ class SignInPage extends React.Component {
     render() {
         return (
             <div className="site-wrapper full-page">
-                <div className="col-uno"></div>
                 <div className="full-form">
                     <SignInForm 
                         user={this.state.user}
@@ -77,8 +76,6 @@ SignInPage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     let currentUser = {email: 'derekabois@gmail.com', password: 'a123'};
-
-    console.log(state);
 
     return {
         currentUser: currentUser

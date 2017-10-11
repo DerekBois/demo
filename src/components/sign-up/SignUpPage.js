@@ -54,7 +54,6 @@ class SignUpPage extends React.Component {
     render() {
         return (
             <div className="site-wrapper full-page">
-                <div className="col-uno"></div>
                 <div className="full-form">
                     <SignUpForm 
                         user={this.state.user}

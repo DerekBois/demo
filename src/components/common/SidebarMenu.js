@@ -22,8 +22,11 @@ const SidebarMenu = ({path}) => {
                     let active = item.path === path;
                     return (
                         <li key={i} className={active && 'active'}>
+                            <Link to={item.path} className="nav-icon">
+                                <Icon i={item.icon}/>
+                            </Link>
                             <Link to={item.path}>
-                                <Icon i={item.icon}/>{item.title}
+                                {item.title}
                             </Link>
                         </li>
                     );

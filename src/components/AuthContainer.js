@@ -41,7 +41,7 @@ class AuthContainer extends React.Component {
                 </div>
             );
         }
-        return <div>'loading...'</div>;
+        return <div></div>;
     }
 }
 AuthContainer.propTypes = {
